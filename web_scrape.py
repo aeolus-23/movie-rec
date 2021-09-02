@@ -4,18 +4,9 @@
 
 import requests
 from bs4 import BeautifulSoup
-import json
+import json  
 
-topRatedUrl = "https://www.imdb.com/chart/top/?ref_=nv_mv_250"
-res = requests.get(topRatedUrl)
-res.raise_for_status()
-soup = BeautifulSoup(res.text, 'html.parser')
-print("Start program. Downloading from " + topRatedUrl)
-
-top_250 = []
-movies = soup.select(".titleColumn a")    
-
-def buildMovieDic(movie) -> dict:
+def buildMovieDic(movie, soup) -> dict:
     """Create dictionary of title, url, year, synopsis from IMDB movie list"""
     dic = {}
     IMDB = "https://imdb.com"
@@ -35,21 +26,42 @@ def buildMovieDic(movie) -> dict:
 
     return dic
 
-# Build dictionary and append to list
-for movie in movies[:10]:
-    dic = buildMovieDic(movie)
-    top_250.append(dic)
-
-# Write list to text file (temporary to check progress) using json string
-print("Writing list to text file...")
-with open("top250.json", 'w') as f:
-    json.dump(top_250, f, indent=2)
-
 def writeJson(filename: str, data):
     """Writes data to JSON file"""
     try:
+        print("Writing to file " + filename)
         with open(filename, 'w') as out_file:
             json.dump(data, out_file, inent=2)
     except FileNotFoundError:
         print("Could not find destination file.")
         print("Did not write data.")
+
+def retrieve_top_250_online() -> list:
+    """Returns list of movie dictionaries retrieved from IMDB top250"""
+    # Retrieves movies and writes list to JSON filename specified
+    TOP250URL = "https://www.imdb.com/chart/top/?ref_=nv_mv_250"
+    res = requests.get(TOP250URL)
+    top_250 = []
+    if res.status_code == 200:
+        print("Connected. Downloading from " + TOP250URL)
+        soup = BeautifulSoup(res.text, 'html.parser')
+        movies = soup.select(".titleColumn a")  
+
+        # Loop through movies and build dictionary, appending to list
+        for movie in movies[:10]:
+            dic = buildMovieDic(movie, soup)     # Pass soup to retrieve year
+            top_250.append(dic)
+
+        return top_250
+    elif res.status_code != 200:
+        print("Could not connect to " + TOP250URL)
+
+# Printing for testing purposes
+print("Starting program.")
+mov_list = retrieve_top_250_online()
+for item in mov_list:
+    print(item)
+
+# TODO: Clean "year" key to remove parenthesis 
+
+# TODO: Figure out if better way to retrieve year 
