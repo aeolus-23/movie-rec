@@ -44,3 +44,12 @@ for movie in movies[:10]:
 print("Writing list to text file...")
 with open("top250.txt", 'w') as f:
     json.dump(top_250, f, indent=2)
+
+def writeJson(filename: str, data):
+    """Writes data to JSON file"""
+    try:
+        with open(filename, 'w') as out_file:
+            json.dump(data, out_file, inent=2)
+    except FileNotFoundError:
+        print("Could not find destination file.")
+        print("Did not write data.")
