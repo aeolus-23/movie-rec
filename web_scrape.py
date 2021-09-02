@@ -26,7 +26,7 @@ def buildMovieDic(movie, soup) -> dict:
 
     return dic
 
-def writeJson(filename: str, data):
+def writeJson(filename: str, data): 
     """Writes data to JSON file"""
     try:
         print("Writing to file " + filename)
@@ -49,7 +49,7 @@ def retrieve_top_250_online() -> list:
         movies = soup.select(".titleColumn a")  
 
         # Loop through movies and build dictionary, appending to list
-        for movie in movies:
+        for movie in movies[:50]:
             dic = buildMovieDic(movie, soup)     # Pass soup to retrieve year
             top_250.append(dic)
 
@@ -60,15 +60,16 @@ def retrieve_top_250_online() -> list:
 def retrieve_top_250_offline(filename) -> list:
     """Returns list of movie dictionaries from offline JSON file of top 250"""
     try:
-        top_250 = json.load(filename)
-        return top_250
+        with open(filename, 'r') as f:
+            top_250 = json.load(f)
+            return top_250
     except FileNotFoundError:
         print("Could not find your file.")
 
 # Printing for testing purposes
-print("Starting program.")
-movie_list = retrieve_top_250_online()
-writeJson("top250.json", movie_list)
+# print("Starting program.")
+# movie_list = retrieve_top_250_online()
+# writeJson("top250.json", movie_list)
 
 # TODO: Clean "year" key to remove parenthesis 
 
