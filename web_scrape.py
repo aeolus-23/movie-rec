@@ -56,6 +56,14 @@ def retrieve_top_250_online() -> list:
     elif res.status_code != 200:
         print("Could not connect to " + TOP250URL)
 
+def retrieve_top_250_offline(filename) -> list:
+    """Returns list of movie dictionaries from offline JSON file of top 250"""
+    try:
+        movie_list = json.load(filename)
+        return movie_list
+    except FileNotFoundError:
+        print("Could not find your file.")
+
 # Printing for testing purposes
 print("Starting program.")
 mov_list = retrieve_top_250_online()
