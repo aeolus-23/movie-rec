@@ -31,7 +31,8 @@ def writeJson(filename: str, data):
     try:
         print("Writing to file " + filename)
         with open(filename, 'w') as out_file:
-            json.dump(data, out_file, inent=2)
+            json.dump(data, out_file, indent=2)
+        print("Finished writing to file.")
     except FileNotFoundError:
         print("Could not find destination file.")
         print("Did not write data.")
@@ -48,7 +49,7 @@ def retrieve_top_250_online() -> list:
         movies = soup.select(".titleColumn a")  
 
         # Loop through movies and build dictionary, appending to list
-        for movie in movies[:10]:
+        for movie in movies:
             dic = buildMovieDic(movie, soup)     # Pass soup to retrieve year
             top_250.append(dic)
 
@@ -67,8 +68,7 @@ def retrieve_top_250_offline(filename) -> list:
 # Printing for testing purposes
 print("Starting program.")
 movie_list = retrieve_top_250_online()
-for item in movie_list:
-    print(item)
+writeJson("top250.json", movie_list)
 
 # TODO: Clean "year" key to remove parenthesis 
 
