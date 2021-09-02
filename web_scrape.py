@@ -15,8 +15,8 @@ print("Start program. Downloading from " + topRatedUrl)
 top_250 = []
 movies = soup.select(".titleColumn a")    
 
-# Append a new dictionary for each movie to top_250 
-for movie in movies:
+def buildMovieDic(movie) -> dict:
+    """Create dictionary of title, url, year, synopsis from IMDB movie list"""
     dic = {}
     IMDB = "https://imdb.com"
     print("Retrieving data for " + movie.text)
@@ -33,6 +33,11 @@ for movie in movies:
     synopsis = new_soup.select(".GenresAndPlot__TextContainerBreakpointXL-cum89p-2")
     dic["synopsis"] = synopsis[0].text
 
+    return dic
+
+# Build dictionary and append to list
+for movie in movies[:10]:
+    dic = buildMovieDic(movie)
     top_250.append(dic)
 
 # Write list to text file (temporary to check progress) using json string
