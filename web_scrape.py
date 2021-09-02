@@ -42,7 +42,7 @@ for movie in movies[:10]:
 
 # Write list to text file (temporary to check progress) using json string
 print("Writing list to text file...")
-with open("top250.txt", 'w') as f:
+with open("top250.json", 'w') as f:
     json.dump(top_250, f, indent=2)
 
 def writeJson(filename: str, data):
