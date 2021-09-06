@@ -6,23 +6,24 @@ import requests
 from bs4 import BeautifulSoup
 import json  
 
-def buildMovieDic(movie, soup) -> dict:
+def buildMovieDic(movie) -> dict:
     """Create dictionary of title, url, year, synopsis from IMDB movie list"""
     dic = {}
     IMDB = "https://imdb.com"
     print("Retrieving data for " + movie.text)
     dic["title"] = movie.text
     dic["url"] = IMDB + movie['href']
-    years = soup.select('.titleColumn span')
-    dic["year"] = years[0].text
 
     # Retrieve synopsis from each movie's page
     res = requests.get(dic["url"])
     res.raise_for_status()
     new_soup = BeautifulSoup(res.text, 'html.parser')
 
+    # Scrape data from each movie's individual page
     synopsis = new_soup.select(".GenresAndPlot__TextContainerBreakpointXL-cum89p-2")
     dic["synopsis"] = synopsis[0].text
+    year  = new_soup.select('.TitleBlockMetaData__MetaDataList-sc-12ein40-0 > li:nth-child(1) > span:nth-child(2)')
+    dic["year"] = year[0].text
 
     return dic
 
@@ -49,8 +50,8 @@ def retrieve_top_250_online() -> list:
         movies = soup.select(".titleColumn a")  
 
         # Loop through movies and build dictionary, appending to list
-        for movie in movies[:50]:
-            dic = buildMovieDic(movie, soup)     # Pass soup to retrieve year
+        for movie in movies[:5]:
+            dic = buildMovieDic(movie)     # Pass soup to retrieve year
             top_250.append(dic)
 
         return top_250
@@ -74,3 +75,4 @@ def retrieve_top_250_offline(filename) -> list:
 # TODO: Clean "year" key to remove parenthesis 
 
 # TODO: Figure out if better way to retrieve year 
+
