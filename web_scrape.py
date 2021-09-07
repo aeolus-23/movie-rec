@@ -4,7 +4,9 @@
 
 import requests
 from bs4 import BeautifulSoup
-import json  
+import json
+
+from requests import status_codes  
 
 def buildMovieDic(movie) -> dict:
     """Create dictionary of title, url, year, synopsis from IMDB movie list"""
@@ -50,8 +52,8 @@ def retrieve_top_250_online() -> list:
         movies = soup.select(".titleColumn a")  
 
         # Loop through movies and build dictionary, appending to list
-        for movie in movies[:5]:
-            dic = buildMovieDic(movie)     # Pass soup to retrieve year
+        for movie in movies[:100]:
+            dic = buildMovieDic(movie)    
             top_250.append(dic)
 
         return top_250
@@ -67,12 +69,21 @@ def retrieve_top_250_offline(filename) -> list:
     except FileNotFoundError:
         print("Could not find your file.")
 
-# Printing for testing purposes
-# print("Starting program.")
-# movie_list = retrieve_top_250_online()
-# writeJson("top250.json", movie_list)
+def retrieve_most_popular_online() -> list:
+    """Returns list of movies from the IMDb chart - Most Popular Movies"""
+    MOST_POP_URL = "https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm"
+    res = requests.get(MOST_POP_URL)
+    most_pop_movies = []
+    if res.status_code == 200:
+        print("Downloading from " + MOST_POP_URL)
+        soup = BeautifulSoup(res.text, 'html.parser')
+        movies = soup.select(".titleColumn a")
 
-# TODO: Clean "year" key to remove parenthesis 
+        for movie in movies:
+            dic = buildMovieDic(movie)
+            most_pop_movies.append(dic)
 
-# TODO: Figure out if better way to retrieve year 
+        return most_pop_movies
 
+    elif res.status_code != 200:
+        print("Could not connect to " + MOST_POP_URL)
