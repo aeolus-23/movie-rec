@@ -5,6 +5,7 @@ import web_scrape as web
 import random_movie as randmov
 from os import get_terminal_size
 import sys
+from random import choice
 
 def main():
     """Main function for Movie Recommender's interface"""
@@ -27,12 +28,26 @@ def main():
 
     selection = int(input("Your Selection: "))
 
+    if selection.lower() == "exit":
+        sys.exit()
+
     if selection == 1:
-        print("You selected web scraping")
+        print("You selected web scraping [NOT READY]")
     elif selection == 2:
-        print("Random movies")
+        print("Random movies [NOT READY]")
+    
+    # Displays 3 synopses from a randomly chosen movie data JSON file in .\data
     elif selection == 3:
-        sys.exit
+        print("Quickstart [NOT READY]")
+        movie_data = randmov.check_for_json()
+        if movie_data:
+            selected_data = choice(movie_data)
+            randmov.three_random_synopses(selected_data)
+        elif movie_data == False:
+            print("No downloaded movie data found.")
+
+    elif selection == 4:
+        sys.exit()
     else:
         print("Please enter a valid option (1, 2, 3)")
     
