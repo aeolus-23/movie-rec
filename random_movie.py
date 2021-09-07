@@ -7,9 +7,17 @@ import os
 
 def three_random_synopses(data: list) -> list:
     """Returns three random synopses (with no titles)"""
-    sel_movies = random.sample(data, 3)
-    synopses = [movie["synopsis"] for movie in sel_movies]
-    return synopses
+
+    # Validate data is a list and check its length
+    if type(data) == list:   
+        if len(data) > 3:
+            sel_movies = random.sample(data, 3)
+        elif len(data) < 3:
+            sel_movies = data
+        synopses = [movie["synopsis"] for movie in sel_movies]
+        return synopses
+    elif type(data) != list:
+        print("Your data type is not a list. Please double check your data.")
 
 def check_for_json():
     """Checks if JSON files with moveie data already exist"""
