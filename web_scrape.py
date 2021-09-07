@@ -10,11 +10,12 @@ import random
 # CONSTANTS
 MOST_POP_URL = "https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm"
 
-def buildMovieDic(movie) -> dict:
+def buildMovieDic(movie, verbose=True) -> dict:
     """Create dictionary of title, url, year, synopsis from IMDB movie list"""
     dic = {}
     IMDB = "https://imdb.com"
-    print("Retrieving data for " + movie.text)
+    if verbose:         # Prints info for each movie
+        print("Retrieving data for " + movie.text)
     dic["title"] = movie.text
     dic["url"] = IMDB + movie['href']
 
@@ -103,7 +104,7 @@ def simple_random_movies_online(url=MOST_POP_URL) -> list:
 
         sel_movies = random.sample(movies, 3)
         for movie in sel_movies:
-            dic = buildMovieDic(movie)
+            dic = buildMovieDic(movie, verbose=False)
             three_random_movies.append(dic)
 
         return three_random_movies
