@@ -6,11 +6,13 @@ import random_movie as randmov
 from os import get_terminal_size
 import sys
 from random import choice
+from settings import UISettings
 
 def main():
     """Main function for Movie Recommender's interface"""
-    print("Welcome to Movie Recommender (v0.1)!")
-    print("Type 'exit' at any type to exit the program.")
+    # print("Welcome to Movie Recommender (v0.1)!")
+    # print("Type 'exit' at any type to exit the program.")
+    UISettings.print_welcome()
     terminal_size = get_terminal_size()
     options_txt = "MENU OPTIONS"
     menu_options = [
