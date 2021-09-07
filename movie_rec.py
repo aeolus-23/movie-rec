@@ -26,27 +26,32 @@ def main():
     for option in menu_options:
         print(option)
 
-    selection = int(input("Your Selection: "))
+    selection = input("Your Selection: ")
 
     if selection.lower() == "exit":
         sys.exit()
 
-    if selection == 1:
+    if int(selection) == 1:
         print("You selected web scraping [NOT READY]")
-    elif selection == 2:
+    elif int(selection) == 2:
         print("Random movies [NOT READY]")
     
     # Displays 3 synopses from a randomly chosen movie data JSON file in .\data
-    elif selection == 3:
+    elif int(selection) == 3:
         print("Quickstart [NOT READY]")
         movie_data = randmov.check_for_json()
         if movie_data:
-            selected_data = choice(movie_data)
-            randmov.three_random_synopses(selected_data)
+            selected_file = choice(movie_data)
+            # TODO: Check for better way to format filename argument
+            movies = web.retrieve_top_250_offline(".\data\\" + selected_file)
+            synopses = randmov.three_random_synopses(movies)
+            for synopsis in synopses:
+                print("=" * int(terminal_size[0]))
+                print(synopsis.center(terminal_size[0]))
         elif movie_data == False:
             print("No downloaded movie data found.")
 
-    elif selection == 4:
+    elif int(selection) == 4:
         sys.exit()
     else:
         print("Please enter a valid option (1, 2, 3)")
