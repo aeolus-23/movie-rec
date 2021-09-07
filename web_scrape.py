@@ -5,6 +5,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+import random
 
 from requests import status_codes  
 
@@ -87,3 +88,24 @@ def retrieve_most_popular_online() -> list:
 
     elif res.status_code != 200:
         print("Could not connect to " + MOST_POP_URL)
+
+def simple_random_movies_online(url: str) -> list:
+    """Returns a list of dictionaries for three randomly chosen movies.
+    Requires url argument."""
+    # TODO: Write function to validate url
+    res = requests.get(url)
+    three_random_movies = []
+    if res.status_code == 200:
+        print("Downloading three random movies from " + url)
+        soup = BeautifulSoup(res.text, 'html.parser')
+        movies = soup.seect(".titleColumn a")       # All movies on page list
+
+        sel_movies = random.sample(movies, 3)
+        for movie in sel_movies:
+            dic = buildMovieDic(movie)
+            three_random_movies.append(dic)
+
+        return three_random_movies
+
+    elif res.status_code != 200:
+        print("Could not connect to " + url) 
