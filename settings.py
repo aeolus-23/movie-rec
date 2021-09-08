@@ -1,6 +1,7 @@
 # settings.py - Settings for Movie Recommender
 
 import os
+import web_scrape, movie_rec
 
 class UISettings():
     """Settings for the terminal-based UI"""
@@ -34,3 +35,11 @@ class UISettings():
     def print_welcome():
         print("Welcome to movie recommender!")
         print("Enter 'exit' at any time to exit")
+
+    def format_menu(self, menu: dict):
+        """Takes dictionary of menu items and prints pretty menu"""
+        print(self.menu_title.center(self.terminal_columns))    # Menu Title
+        print("=" * self.terminal_columns)          # Adds nice line break
+        for item in menu:
+            print(item["text"])
+        print("=" * self.terminal_columns)

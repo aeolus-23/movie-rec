@@ -15,6 +15,7 @@ def main():
     UISettings.print_welcome()
     for option in settings.menu_options:
         print(option)
+
     selection = input("Your Selection: ")
 
     # TODO: Fix selections and add corresponding functions (change to loop?)
