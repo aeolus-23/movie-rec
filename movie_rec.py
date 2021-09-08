@@ -10,22 +10,11 @@ from settings import UISettings
 
 def main():
     """Main function for Movie Recommender's interface"""
-    # print("Welcome to Movie Recommender (v0.1)!")
-    # print("Type 'exit' at any type to exit the program.")
     UISettings.print_welcome()
+    settings = UISettings()
     terminal_size = get_terminal_size()
-    options_txt = "MENU OPTIONS"
-    menu_options = [
-        options_txt.center(terminal_size[0]),
-        "=" * int(terminal_size[0]),
-        "(1) Web Scraping Functions",
-        "(2) Movie Recommender",
-        "(3) Recommend me something good! (Quickstart)",
-        "(4) Exit",
-        "=" * int(terminal_size[0]),
-    ]
 
-    for option in menu_options:
+    for option in settings.menu_options:
         print(option)
 
     selection = input("Your Selection: ")
