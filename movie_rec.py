@@ -10,22 +10,28 @@ from settings import UISettings
 
 def main():
     """Main function for Movie Recommender's interface"""
-    UISettings.print_welcome()
     settings = UISettings()
-    terminal_size = get_terminal_size()
-
+    # Display the main menu
+    UISettings.print_welcome()
     for option in settings.menu_options:
         print(option)
-
     selection = input("Your Selection: ")
+
+    # TODO: Fix selections and add corresponding functions (change to loop?)
 
     if selection.lower() == "exit":
         sys.exit()
 
     if int(selection) == 1:
         print("You selected web scraping [NOT READY]")
+
+    # Recommend from Online (web scraping)
     elif int(selection) == 2:
-        print("Random movies [NOT READY]")
+        # Show the online service sub-menu
+        for option in settings.web_scrape_menu:
+            print(option)
+
+        sub_select = input("Your Selection: ")
     
     # Displays 3 synopses from a randomly chosen movie data JSON file in .\data
     elif int(selection) == 3:
@@ -37,8 +43,8 @@ def main():
             movies = web.retrieve_top_250_offline(".\data\\" + selected_file)
             synopses = randmov.three_random_synopses(movies)
             for synopsis in synopses:
-                print("=" * int(terminal_size[0]))
-                print(synopsis.center(terminal_size[0]))
+                print("=" * settings.terminal_columns)
+                print(synopsis.center(settings.terminal_columns))
         elif movie_data == False:
             print("No downloaded movie data found.")
 

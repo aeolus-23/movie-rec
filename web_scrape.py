@@ -74,6 +74,8 @@ def retrieve_top_250_offline(filename) -> list:
 
 def retrieve_most_popular_online() -> list:
     """Returns list of movies from the IMDb chart - Most Popular Movies"""
+
+    # TODO: Write function to validate network connection before requests.get
     
     res = requests.get(MOST_POP_URL)
     most_pop_movies = []
@@ -95,7 +97,15 @@ def simple_random_movies_online(url=MOST_POP_URL) -> list:
     """Returns a list of dictionaries for three randomly chosen movies.
     Requires url argument (Defaults to most popular)."""
     # TODO: Write function to validate url
-    res = requests.get(url)
+    try:
+        res = requests.get(url)
+    except requests.exceptions.RequestException as err:     # Not working??
+        print(f"An error occured: {err}")
+    except requests.exceptions.ConnectionError:
+        print(f"A connection error occured: {requests.ConnectionError}")
+    except requests.exceptions.NewConnectionError:
+        print(f"Error: {requests.NewConnectionError}")
+
     three_random_movies = []
     if res.status_code == 200:
         print("Downloading three random movies from " + url)
