@@ -93,6 +93,9 @@ def retrieve_most_popular_online() -> list:
     elif res.status_code != 200:
         print("Could not connect to " + MOST_POP_URL)
 
+def retrieve_from_custom_url(url) -> list:
+    pass
+
 def simple_random_movies_online(url=MOST_POP_URL) -> list:
     """Returns a list of dictionaries for three randomly chosen movies.
     Requires url argument (Defaults to most popular)."""

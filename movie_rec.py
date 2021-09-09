@@ -3,7 +3,6 @@
 
 import web_scrape as web
 import random_movie as randmov
-from os import get_terminal_size
 import sys
 from random import choice
 from settings import UISettings
@@ -23,18 +22,38 @@ def main():
     if selection.lower() == "exit":
         sys.exit()
 
-    if int(selection) == 1:
-        print("You selected web scraping [NOT READY]")
+    # Quickstart - shows 3 random movies from online
+    elif int(selection) == 1:
+        movies = web.simple_random_movies_online()
+        print("=" * settings.terminal_columns)
+        for movie in movies:
+            print(movie["synopsis"])
+        print("=" * settings.terminal_columns)
 
-    # Recommend from Online (web scraping)
+    # Displays options for online movie recommendations
     elif int(selection) == 2:
         # Show the online service sub-menu
         for option in settings.web_scrape_menu:
             print(option)
-
         sub_select = input("Your Selection: ")
-    
-    # Displays 3 synopses from a randomly chosen movie data JSON file in .\data
+
+        if sub_select.lower() == "exit" or "quit":
+            sys.exit()
+
+        # Random movies from Top 250 (online)
+        elif int(sub_select) == 1:
+            movs = randmov.three_random_synopses(web.retrieve_top_250_online())
+            for movie in movs:
+                print(movie["synopsis"])
+
+        # Random movies from a custom URL
+        elif int(sub_select) == 2:
+            print("[NOT READY YET]")
+            movs = randmov.three_random_synopses(web.retrieve_from_custom_url())
+            for movie in movs:
+                print(movie["synopsis"])
+
+    # Displays options for offline movie recommendations
     elif int(selection) == 3:
         print("Quickstart [NOT READY]")
         movie_data = randmov.check_for_json()
@@ -52,7 +71,7 @@ def main():
     elif int(selection) == 4:
         sys.exit()
     else:
-        print("Please enter a valid option (1, 2, 3)")
+        print("Please enter a valid option.")
     
 
 if __name__ == "__main__":

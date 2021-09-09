@@ -14,8 +14,7 @@ def three_random_synopses(data: list) -> list:
             sel_movies = random.sample(data, 3)
         elif len(data) < 3:
             sel_movies = data
-        synopses = [movie["synopsis"] for movie in sel_movies]
-        return synopses
+        return sel_movies
     elif type(data) != list:
         print("Your data type is not a list. Please double check your data.")
 
