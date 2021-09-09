@@ -9,6 +9,7 @@ import random
 
 # CONSTANTS
 MOST_POP_URL = "https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm"
+TOP250URL = "https://www.imdb.com/chart/top/?ref_=nv_mv_250"
 
 def buildMovieDic(movie, verbose=True) -> dict:
     """Create dictionary of title, url, year, synopsis from IMDB movie list"""
@@ -46,7 +47,6 @@ def writeJson(filename: str, data):
 def retrieve_top_250_online() -> list:
     """Returns list of movie dictionaries retrieved from IMDB top250"""
     # Retrieves movies and writes list to JSON filename specified
-    TOP250URL = "https://www.imdb.com/chart/top/?ref_=nv_mv_250"
     res = requests.get(TOP250URL)
     top_250 = []
     if res.status_code == 200:

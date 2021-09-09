@@ -18,7 +18,7 @@ def main():
 
     # TODO: Fix selections and add corresponding functions (change to loop?)
 
-    if selection.lower() == "exit":
+    if selection.lower() in settings.exit_words:
         sys.exit()
 
     # Quickstart - shows 3 random movies from online
@@ -55,36 +55,27 @@ def main():
             print(option)
         sub_select = input("Your Selection: ")
 
-        if sub_select.lower() == "exit" or "quit":
+        if sub_select.lower() in settings.exit_words:
             sys.exit()
 
         # Random movies from Top 250 (online)
         elif int(sub_select) == 1:
-            movs = randmov.three_random_synopses(web.retrieve_top_250_online())
+            movs = web.simple_random_movies_online(url=web.TOP250URL)
+            print("=" * settings.terminal_columns)
             for movie in movs:
-                print(movie["synopsis"])
+                print(movie["synopsis"] + "\n")    
 
         # Random movies from a custom URL
         elif int(sub_select) == 2:
-            print("[NOT READY YET]")
-            movs = randmov.three_random_synopses(web.retrieve_from_custom_url())
+            url = input("Paste your url here: ")       # TODO: Add validation
+            movs = web.simple_random_movies_online(url)
+            print("=" * settings.terminal_columns)
             for movie in movs:
-                print(movie["synopsis"])
+                print(movie["synopsis"] + "\n")
 
     # Displays options for offline movie recommendations
     elif int(selection) == 3:
-        print("Quickstart [NOT READY]")
-        movie_data = randmov.check_for_json()
-        if movie_data:
-            selected_file = choice(movie_data)
-            # TODO: Check for better way to format filename argument
-            movies = web.retrieve_top_250_offline(".\data\\" + selected_file)
-            synopses = randmov.three_random_synopses(movies)
-            for synopsis in synopses:
-                print("=" * settings.terminal_columns)
-                print(synopsis.center(settings.terminal_columns))
-        elif movie_data == False:
-            print("No downloaded movie data found.")
+        print("Offline Movie Recommendations [NOT READY]")
 
     elif int(selection) == 4:
         sys.exit()

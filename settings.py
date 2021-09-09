@@ -21,6 +21,7 @@ class UISettings():
             "(4) Exit",
             "=" * self.terminal_columns,
         ]
+        self.exit_words = ["exit", "quit", "end",]
 
         # SubMenu Settings
         self.web_scrape_menu = [
