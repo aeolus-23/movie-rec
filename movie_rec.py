@@ -4,7 +4,6 @@
 import web_scrape as web
 import random_movie as randmov
 import sys
-from random import choice
 from settings import UISettings
 
 def main():
