@@ -1,5 +1,4 @@
 .venv
 __pycache__
-top250.json
 data
 tests.py
