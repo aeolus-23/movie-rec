@@ -14,7 +14,6 @@ def main():
     UISettings.print_welcome()
     for option in settings.menu_options:
         print(option)
-
     selection = input("Your Selection: ")
 
     # TODO: Fix selections and add corresponding functions (change to loop?)
@@ -27,8 +26,27 @@ def main():
         movies = web.simple_random_movies_online()
         print("=" * settings.terminal_columns)
         for movie in movies:
-            print(movie["synopsis"])
+            print(movie["synopsis"] + "\n")
         print("=" * settings.terminal_columns)
+        
+        new_menu = True        # Flag for running while loop for showing titles
+        while new_menu == True:
+            print("Enter a number to see that movie's title, or 'all' to see all")
+            prompt = input("Your selection: ")
+            # Shows movies corresponding to list slice (e.g. 1 -> movies[0])
+            if type(prompt) == int:
+                if int(prompt) in range(0, len(movies)):
+                    print(movies[int(prompt)-1]["title"])
+                    break
+            elif prompt.lower() == 'all':
+                for movie in movies:
+                    print(movie["title"])
+                break
+            elif prompt.lower() == "exit":
+                sys.exit()
+            else:
+                print("Please enter a correct option.")
+                continue
 
     # Displays options for online movie recommendations
     elif int(selection) == 2:
