@@ -33,15 +33,14 @@ def main():
             print("Enter a number to see that movie's title, or 'all' to see all")
             prompt = input("Your selection: ")
             # Shows movies corresponding to list slice (e.g. 1 -> movies[0])
-            if type(prompt) == int:
-                if int(prompt) in range(0, len(movies)):
-                    print(movies[int(prompt)-1]["title"])
-                    break
+            if prompt.isdigit() and int(prompt) in range(1, len(movies)+1):
+                print(movies[int(prompt)-1]["title"])
+                break
             elif prompt.lower() == 'all':
                 for movie in movies:
                     print(movie["title"])
                 break
-            elif prompt.lower() == "exit":
+            elif prompt.lower() in settings.exit_words:
                 sys.exit()
             else:
                 print("Please enter a correct option.")
